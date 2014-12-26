@@ -27,4 +27,4 @@ executable anima
 Test-Suite Tests
   type:          exitcode-stdio-1.0
   main-is:       Tests.hs
-  build-depends: base
+  build-depends: base >=4.6 && <4.7
