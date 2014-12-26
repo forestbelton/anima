@@ -19,9 +19,14 @@ appIdentityTC = check "application of identity typechecks" exp actual
     where exp    = Just TUnit
           actual = typeOf [] (EApp (eID TUnit) EUnit)
 
+idThroughIdTC = check "id . id : unit -> unit" exp actual
+    where exp    = Just (TFun TUnit TUnit)
+          actual = typeOf [] (EApp (eID (TFun TUnit TUnit)) (eID TUnit))
+
 checks = [
     unitIdentity,
-    appIdentityTC
+    appIdentityTC,
+    idThroughIdTC
   ]
 
 main = do
