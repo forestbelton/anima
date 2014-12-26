@@ -5,7 +5,7 @@ import Control.Applicative
 type Var = Int
 type Env = [Expr]
 
-look :: Var -> Env -> Maybe Expr
+look :: Var -> [a] -> Maybe a
 look _ []     = Nothing
 look 0 (x:xs) = Just x
 look n (x:xs) = look (n - 1) xs
@@ -23,10 +23,10 @@ data Expr
   deriving (Show, Eq)
 
 -- type checking
-typeOf :: Env -> Expr -> Maybe Ty
+typeOf :: [Ty] -> Expr -> Maybe Ty
 typeOf env EUnit      = Just TUnit
-typeOf env (EVar v)   = look v env >>= typeOf env
-typeOf env (EAbs t m) = TFun t <$> typeOf env m
+typeOf env (EVar v)   = look v env
+typeOf env (EAbs t m) = TFun t <$> typeOf (t:env) m
 typeOf env (EApp a b) = do
     ta <- typeOf env a
     tb <- typeOf env b

@@ -16,7 +16,7 @@ unitIdentity = check "identity for units" exp actual
           actual = EAbs TUnit (EVar 0)
 
 appIdentityTC = check "application of identity typechecks" exp actual
-    where exp    = Just (TFun TUnit TUnit)
+    where exp    = Just TUnit
           actual = typeOf [] (EApp (eID TUnit) EUnit)
 
 checks = [
