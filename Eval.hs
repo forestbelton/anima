@@ -1,8 +1,6 @@
 module Eval where
 
 import Control.Applicative
-import Data.Maybe
-import Text.Printf
 
 type Var = Int
 type Env = [Expr]
@@ -59,35 +57,9 @@ beta (EVar v)   = EVar v
 beta (EAbs t e) = EAbs t (beta e)
 beta (EApp a b) = shift (-1) 0 (subst 0 (shift 1 0 a) b)
 
-eval :: Expr -> IO ()
-eval e = case typeOf [] e of
-    Nothing -> putStrLn "Failed to typecheck"
-    _       -> print $ beta e
-
 -- helper constructors
 unit :: Expr
 unit = EUnit
 
 eID :: Ty -> Expr
 eID ty = EAbs ty (EVar 0)
-
--- unit testing
-check :: (Eq a, Show a) => String -> a -> a -> Maybe String
-check err a b = if a == b
-    then Nothing
-    else Just (printf "'%s':\n\tgot      %s\n\texpected %s\n" err (show b) (show a))
-
-unitIdentity = check "identity for units" exp actual
-    where exp    = eID TUnit
-          actual = EAbs TUnit (EVar 0)
-
-appIdentityTC = check "application of identity typechecks" exp actual
-    where exp    = Just (TFun TUnit TUnit)
-          actual = typeOf [] (EApp (eID TUnit) EUnit)
-
-checks = [
-    unitIdentity,
-    appIdentityTC
-  ]
-
-failures = mapM_ putStr (catMaybes checks)

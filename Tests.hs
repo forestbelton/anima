@@ -1,9 +1,10 @@
-module Tests where
+module Main where
 
 import Eval
 
-import Data.Maybe
-import Text.Printf
+import Data.Maybe (catMaybes)
+import Text.Printf (printf)
+import System.Exit (exitSuccess, exitFailure)
 
 check :: (Eq a, Show a) => String -> a -> a -> Maybe String
 check err a b = if a == b
@@ -23,4 +24,9 @@ checks = [
     appIdentityTC
   ]
 
-failures = mapM_ putStr (catMaybes checks)
+main = do
+    let failures = catMaybes checks
+    mapM_ putStrLn failures
+    if length failures == 0
+        then exitSuccess
+        else exitFailure
