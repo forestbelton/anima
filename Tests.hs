@@ -1,6 +1,6 @@
 module Main where
 
-import Eval
+import Anima.Eval
 
 import Data.Maybe (catMaybes)
 import Text.Printf (printf)

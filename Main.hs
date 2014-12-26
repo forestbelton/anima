@@ -1,6 +1,6 @@
 module Main where
 
-import Eval
+import Anima.Eval
 
 eval :: Expr -> IO ()
 eval e = case typeOf [] e of

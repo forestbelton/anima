@@ -1,4 +1,4 @@
-module Eval where
+module Anima.Eval where
 
 import Control.Applicative
 
@@ -30,9 +30,12 @@ typeOf env (EAbs t m) = TFun t <$> typeOf env m
 typeOf env (EApp a b) = do
     ta <- typeOf env a
     tb <- typeOf env b
-    if ta == tb
-        then Just tb
-        else Nothing
+    case ta of
+        TFun t _ ->
+            if t == tb
+                then Just tb
+                else Nothing
+        _        -> Nothing
 
 -- evaluation
 shift :: Var -> Var -> Expr -> Expr
