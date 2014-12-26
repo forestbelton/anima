@@ -15,6 +15,10 @@ unitIdentity = check "identity for units" exp actual
     where exp    = eID TUnit
           actual = EAbs TUnit (EVar 0)
 
+unitTC = check "unit typechecks" exp actual
+    where exp    = Just TUnit
+          actual = typeOf [] EUnit
+
 appIdentityTC = check "application of identity typechecks" exp actual
     where exp    = Just TUnit
           actual = typeOf [] (EApp (eID TUnit) EUnit)
