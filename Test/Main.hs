@@ -39,11 +39,11 @@ unitTC = check "unit typechecks" exp actual
           actual = typeOf [] unit
 
 appIdentityTC = check "application of identity typechecks" exp actual
-    where exp    = tunit
+    where exp    = unit
           actual = typeOf [] (Apply (eID tunit) unit)
 
 idThroughIdTC = check "id . id : unit -> unit" exp actual
-    where exp    = Binder Pi tunit tunit
+    where exp    = Binder Lam tunit (Var 0)
           actual = typeOf [] (Apply (eID (Binder Pi tunit tunit)) (eID tunit))
 
 -- parser tests
