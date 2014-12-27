@@ -12,8 +12,8 @@ The syntax uses parentheses in a way similar to a Lisp.
 | ----------- | ----------------------------------------------------------------------------- |
 | `0, 1, ...` | De Bruijn indices                                                             |
 | `E`         | The inhabitant of the unit type                                               |
-| `TUnit`     | The type of the unit type (aka TUnit)                                         |
-| `Type`      | The type of types (aka TType)                                                 |
+| `TUnit`     | The type of the unit type                                                     |
+| `Type`      | The type of types (aka TType). Yes, this needs universes                      |
 | `lam t e`   | A function that accepts an input of type t, and evaluates to the expression e |
 | `pi t e`    | The dependent function                                                        |
 
