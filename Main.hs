@@ -1,5 +1,6 @@
 module Main where
 
+import Anima.Types
 import Anima.Eval
 
 eval :: Expr -> IO ()

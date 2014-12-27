@@ -1,24 +1,12 @@
 module Anima.Eval where
 
+import Anima.Types
 import Control.Applicative
-
-type Var = Int
-type Env = [Expr]
 
 look :: Var -> [a] -> Maybe a
 look _ []     = Nothing
 look 0 (x:xs) = Just x
 look n (x:xs) = look (n - 1) xs
-
-data Expr
-    = EUnit          -- 1
-    | TType          -- Type
-    | TUnit          -- Type of 1
-    | EVar Var       -- x
-    | EAbs Expr Expr -- λ x:T . M
-    | EPi Expr Expr  -- ∀ x:T . M
-    | EApp Expr Expr -- M N
-  deriving (Show, Eq)
 
 -- type checking
 typeOf :: Env -> Expr -> Maybe Expr
