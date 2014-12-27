@@ -12,7 +12,7 @@ The syntax uses parentheses in a way similar to a Lisp.
 | ----------- | ----------------------------------------------------------------------------- |
 | `0, 1, ...` | De Bruijn indices                                                             |
 | `E`         | The inhabitant of the unit type                                               |
-| `TE`        | The type of the unit type (aka TUnit)                                         |
+| `TUnit`     | The type of the unit type (aka TUnit)                                         |
 | `Type`      | The type of types (aka TType)                                                 |
 | `lam t e`   | A function that accepts an input of type t, and evaluates to the expression e |
 | `pi t e`    | The dependent function                                                        |
@@ -30,9 +30,9 @@ Preprocessing executable 'anima' for anima-0.1.0.0...
 
 > E
 E : TUnit
-> (lam TE E)
-(lam TE E) : EPi TUnit TUnit
-> (lam TE 0)
-(lam TE 0) : EPi TUnit TUnit
+> (lam TUnit E)
+(lam TUnit E) : EPi TUnit TUnit
+> (lam TUnit 0)
+(lam TUnit 0) : EPi TUnit TUnit
 >
 ```

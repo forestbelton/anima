@@ -42,7 +42,7 @@ parseUnit = check "can parse unit" exp actual
 
 parseUnitTy = check "can parse unit type" exp actual
     where exp    = Right TUnit
-          actual = parse expr "" "TE"
+          actual = parse expr "" "TUnit"
 
 parseTyTy = check "can parse type type" exp actual
     where exp    = Right TType
@@ -50,7 +50,7 @@ parseTyTy = check "can parse type type" exp actual
 
 parseIdFunc = check "can parse function () -> ()" exp actual
     where exp    = Right (EAbs TUnit EUnit)
-          actual = parse expr "" "(lam TE E)"
+          actual = parse expr "" "(lam TUnit E)"
 
 checks = [
     unitIdentity,

@@ -14,7 +14,7 @@ General syntax, a la LISP: (fn arg1)
 
 Base values:
 E             -- The value of the unit type
-TE            -- The type of the unit type
+TUnit         -- The type of the unit type
 Type          -- The type of types
 
 Special forms:
@@ -30,7 +30,7 @@ ws = many (oneOf " \r\t\n")
 nt p = string p <* ws
 
 base = (EUnit <$ nt "E")
-  <|> try (TUnit <$ nt "TE")
+  <|> try (TUnit <$ nt "TUnit")
   <|> (TType <$ nt "Type")
   <|> (EVar . read <$> (many1 (oneOf "0123456789") <* ws))
 
