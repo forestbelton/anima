@@ -26,9 +26,6 @@ repl = forever $ do
     line <- getLine
     case parse expr "" line of
         Right e -> do
-            case typeOf [] e of
-                Just ty ->
-                    putStrLn $ (show (beta e)) ++ " : " ++ (show ty)
-                Nothing ->
-                    putStrLn "Failed to typecheck"
+            let ty = typeOf [] e
+            putStrLn $ (show (beta [] e)) ++ " : " ++ (show ty)
         Left err   -> print err

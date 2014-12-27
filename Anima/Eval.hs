@@ -5,34 +5,38 @@ import Anima.Substitution
 
 import Control.Applicative
 
-look :: TermVar -> [a] -> Maybe a
-look _ []     = Nothing
-look 0 (x:xs) = Just x
+look :: TermVar -> [a] -> a
+look _ []     = error "couldn't find var"
+look 0 (x:xs) = x
 look n (x:xs) = look (n - 1) xs
 
 -- type checking
-typeOf :: Env -> Term -> Maybe Term
-typeOf env (Base Unit)      = Just (Base TUnit)
-typeOf env (Base x)         = Just (Base Type) -- Type : Type for now
+typeOf :: Env -> Term -> Term
+typeOf env (Base Unit)      = Base TUnit
+typeOf env (Base x)         = Base Type -- Type : Type for now
 typeOf env (Var v)          = look v env
-typeOf env (Binder Lam t m) = Binder Pi t <$> typeOf (t:env) m
-typeOf env (Binder Pi t m)  = Just (Base Type)
-typeOf env (Apply a b)      = do
-    ta <- typeOf env a
-    tb <- typeOf env b
-
-    case ta of
-        Binder Pi s t ->
+typeOf env (Binder Lam t m) = Binder Pi t $ typeOf (t:env) m
+typeOf env (Binder Pi t m)  = Base Type
+typeOf env (Apply a b)      = let ta = typeOf env a
+                                  tb = typeOf env b in
+    case beta env a of
+        Binder Lam s t ->
             if s == tb
-                then Just $ apply_subst b t
-                else Nothing
-        _ ->
-            Nothing
+                then subst t b
+                else error $ "s = " ++ show s ++ ", tb = " ++ show tb
+        x ->
+            error $ "lhs of apply not a pi type (" ++ show x ++ ")"
 
 -- evaluation
-
-beta :: Term -> Term
-beta (Base x) = Base x
-beta (Var v)  = Var v
-beta (Binder b t m) = Binder b t (beta m)
-beta (Apply a b) = undefined
+beta :: Env -> Term -> Term
+beta env (Base x)       = Base x
+beta env (Var v)        = Var v
+beta env (Binder b t m) = let env' = beta env t : env in
+                            Binder b t (beta env' m)
+beta env (Apply a b)    = let ba = beta env a
+                              bb = beta env b in
+                            case ba of
+                                Binder Lam _ m ->
+                                    beta env $ subst m bb
+                                _ ->
+                                    Apply ba bb
