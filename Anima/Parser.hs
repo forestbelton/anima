@@ -29,16 +29,16 @@ Special forms:
 ws = many (oneOf " \r\t\n")
 nt p = string p <* ws
 
-base = (EUnit <$ nt "E")
-  <|> try (TUnit <$ nt "TUnit")
-  <|> (TType <$ nt "Type")
-  <|> (EVar . read <$> (many1 (oneOf "0123456789") <* ws))
+base = (Base Unit <$ nt "E")
+  <|> try (Base TUnit <$ nt "TUnit")
+  <|> (Base Type <$ nt "Type")
+  <|> (Var . read <$> (many1 (oneOf "0123456789") <* ws))
 
-lambda = EAbs <$> (nt "lam" *> expr) <*> expr
+lambda = Binder Lam <$> (nt "lam" *> expr) <*> expr
 
-pi' = EPi <$> (nt "pi" *> expr) <*> expr
+pi' = Binder Pi <$> (nt "pi" *> expr) <*> expr
 
-apply = EApp <$> expr <*> expr
+apply = Apply <$> expr <*> expr
 
 form = lambda
   <|> pi'

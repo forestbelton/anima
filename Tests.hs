@@ -10,6 +10,17 @@ import System.Exit (exitSuccess, exitFailure)
 import Text.ParserCombinators.Parsec
 import Text.ParserCombinators.Parsec.Error
 
+-- helper constructors
+unit :: Term
+unit = Base Unit
+
+tunit :: Term
+tunit = Base TUnit
+
+eID :: Term -> Term
+eID ty = Binder Lam ty (Var 0)
+
+-- test harness
 instance Eq ParseError where
    a == b = errorMessages a == errorMessages b
 
@@ -20,36 +31,36 @@ check err a b = if a == b
 
 -- evaluator tests
 unitIdentity = check "identity for units" exp actual
-    where exp    = eID TUnit
-          actual = EAbs TUnit (EVar 0)
+    where exp    = eID tunit
+          actual = Binder Lam tunit (Var 0)
 
 unitTC = check "unit typechecks" exp actual
-    where exp    = Just TUnit
-          actual = typeOf [] EUnit
+    where exp    = Just tunit
+          actual = typeOf [] unit
 
 appIdentityTC = check "application of identity typechecks" exp actual
-    where exp    = Just TUnit
-          actual = typeOf [] (EApp (eID TUnit) EUnit)
+    where exp    = Just tunit
+          actual = typeOf [] (Apply (eID tunit) unit)
 
 idThroughIdTC = check "id . id : unit -> unit" exp actual
-    where exp    = Just (EPi TUnit TUnit)
-          actual = typeOf [] (EApp (eID (EPi TUnit TUnit)) (eID TUnit))
+    where exp    = Just (Binder Pi tunit tunit)
+          actual = typeOf [] (Apply (eID (Binder Pi tunit tunit)) (eID tunit))
 
 -- parser tests
 parseUnit = check "can parse unit" exp actual
-    where exp    = Right EUnit
+    where exp    = Right unit
           actual = parse expr "" "E"
 
 parseUnitTy = check "can parse unit type" exp actual
-    where exp    = Right TUnit
+    where exp    = Right tunit
           actual = parse expr "" "TUnit"
 
 parseTyTy = check "can parse type type" exp actual
-    where exp    = Right TType
+    where exp    = Right (Base Type)
           actual = parse expr "" "Type"
 
 parseIdFunc = check "can parse function () -> ()" exp actual
-    where exp    = Right (EAbs TUnit EUnit)
+    where exp    = Right (Binder Lam tunit unit)
           actual = parse expr "" "(lam TUnit E)"
 
 checks = [

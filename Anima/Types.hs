@@ -1,14 +1,22 @@
 module Anima.Types where
 
-type Var = Int
-type Env = [Expr]
+type TermVar = Int
+type Env = [Term]
 
-data Expr
-    = EUnit          -- 1
-    | TType          -- Type
-    | TUnit          -- Type of 1
-    | EVar Var       -- x
-    | EAbs Expr Expr -- λ x:T . M
-    | EPi Expr Expr  -- ∀ x:T . M
-    | EApp Expr Expr -- M N
+data TermBase
+    = Unit
+    | Type
+    | TUnit
+  deriving (Show, Eq)
+
+data TermBinder
+    = Lam
+    | Pi
+  deriving (Show, Eq)
+
+data Term
+    = Base TermBase
+    | Var TermVar
+    | Binder TermBinder Term Term
+    | Apply Term Term
   deriving (Show, Eq)
