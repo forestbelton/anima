@@ -2,16 +2,23 @@ module Main where
 
 import Anima.Types
 import Anima.Eval
+import Anima.Parser
 
 import Data.Maybe (catMaybes)
 import Text.Printf (printf)
 import System.Exit (exitSuccess, exitFailure)
+import Text.ParserCombinators.Parsec
+import Text.ParserCombinators.Parsec.Error
+
+instance Eq ParseError where
+   a == b = errorMessages a == errorMessages b
 
 check :: (Eq a, Show a) => String -> a -> a -> Maybe String
 check err a b = if a == b
     then Nothing
     else Just (printf "'%s':\n\tgot      %s\n\texpected %s\n" err (show b) (show a))
 
+-- evaluator tests
 unitIdentity = check "identity for units" exp actual
     where exp    = eID TUnit
           actual = EAbs TUnit (EVar 0)
@@ -28,10 +35,31 @@ idThroughIdTC = check "id . id : unit -> unit" exp actual
     where exp    = Just (EPi TUnit TUnit)
           actual = typeOf [] (EApp (eID (EPi TUnit TUnit)) (eID TUnit))
 
+-- parser tests
+parseUnit = check "can parse unit" exp actual
+    where exp    = Right EUnit
+          actual = parse expr "" "E"
+
+parseUnitTy = check "can parse unit type" exp actual
+    where exp    = Right TUnit
+          actual = parse expr "" "TE"
+
+parseTyTy = check "can parse type type" exp actual
+    where exp    = Right TType
+          actual = parse expr "" "Type"
+
+parseIdFunc = check "can parse function () -> ()" exp actual
+    where exp    = Right (EAbs TUnit EUnit)
+          actual = parse expr "" "(lam TE E)"
+
 checks = [
     unitIdentity,
     appIdentityTC,
-    idThroughIdTC
+    idThroughIdTC,
+
+    parseUnitTy,
+    parseTyTy,
+    parseIdFunc
   ]
 
 main = do

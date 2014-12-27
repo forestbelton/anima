@@ -2,6 +2,7 @@ module Main where
 
 import Anima.Types
 import Anima.Eval
+import Anima.Parser
 
 eval :: Expr -> IO ()
 eval e = case typeOf [] e of
