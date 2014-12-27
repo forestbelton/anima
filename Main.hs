@@ -28,7 +28,7 @@ repl = forever $ do
         Right e -> do
             case typeOf [] e of
                 Just ty ->
-                    putStrLn $ line ++ " : " ++ (show ty)
+                    putStrLn $ (show (beta e)) ++ " : " ++ (show ty)
                 Nothing ->
                     putStrLn "Failed to typecheck"
         Left err   -> print err

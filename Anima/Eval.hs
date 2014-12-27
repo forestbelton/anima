@@ -56,9 +56,12 @@ apply_subst a b = shift (-1) 0 (subst 0 (shift 1 0 a) b)
 
 beta :: Expr -> Expr
 beta EUnit      = EUnit
+beta TType      = TType
+beta TUnit      = TUnit
 beta (EVar v)   = EVar v
 beta (EAbs t e) = EAbs t (beta e)
-beta (EApp a b) = apply_subst a b
+beta (EPi t e)  = EPi t (beta e)
+beta (EApp a b) = beta (apply_subst a b)
 
 -- helper constructors
 unit :: Expr
