@@ -21,8 +21,10 @@ Special forms:
 
 (Lam ty expr) -- s     -> t
 (Pi ty expr)  -- (x:t) -> M x
+(N expr)      -- (N expr) where N = 0, 1, ...
 
 -}
+
 
 ws = many (oneOf " \r\t\n")
 nt p = string p <* ws
@@ -30,9 +32,16 @@ nt p = string p <* ws
 base = (EUnit <$ nt "E")
   <|> try (TUnit <$ nt "TE")
   <|> (TType <$ nt "Type")
+  <|> (EVar . read <$> (many1 (oneOf "0123456789") <* ws))
 
 lambda = EAbs <$> (nt "lam" *> expr) <*> expr
 
+pi' = EPi <$> (nt "pi" *> expr) <*> expr
+
+apply = EApp <$> expr <*> expr
+
 form = lambda
+  <|> pi'
+  <|> apply
 
 expr = (nt "(" *> form <* nt ")") <|> base
