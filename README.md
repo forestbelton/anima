@@ -3,6 +3,20 @@ anima [![status](https://secure.travis-ci.org/forestbelton/anima.png)](http://tr
 
 A simple dependently-typed programming language
 
+glossary
+--------
+
+The syntax uses parentheses in a way similar to a Lisp.
+
+| Name        | Description                                                                   |
+| ----------- | ----------------------------------------------------------------------------- |
+| `0, 1, ...` | De Bruijn indices                                                             |
+| `E`         | The inhabitant of the unit type                                               |
+| `TE`        | The type of the unit type (aka TUnit)                                         |
+| `Type`      | The type of types (aka TType)                                                 |
+| `lam t e`   | A function that accepts an input of type t, and evaluates to the expression e |
+| `pi t e`    | The dependent function                                                        |
+
 example
 -------
 
