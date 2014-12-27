@@ -17,7 +17,7 @@ subst' j s (Base x)       = Base x
 subst' j s (Var i)        = if i == j
     then s
     else Var i
-subst' j s (Binder b t m) = Binder b t (subst' (j + 1) (shift 1 0 s) m)
+subst' j s (Binder b t m) = Binder b (subst t s) (subst' (j + 1) (shift 1 0 s) m)
 subst' j s (Apply t u)    = Apply (subst' j s t) (subst' j s u)
 
 subst :: Term -> Term -> Term
