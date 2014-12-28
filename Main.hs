@@ -28,10 +28,10 @@ topLevel s = do
         else do
             case parse expr "" s of
                 Right e -> do
-                    let ty = typeOf [] e
-                    putStr $ (pprint $ beta [] e) ++ " : "
+                    let reduced = beta [] e
+                    putStr $ (pprint reduced) ++ " : "
                     setSGR [SetColor Foreground Vivid Green]
-                    putStr $ pprint ty
+                    putStr $ pprint (typeOf [] reduced)
                     setSGR []
                     putStr "\n"
                 Left err   -> print err
