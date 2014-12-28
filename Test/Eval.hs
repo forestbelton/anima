@@ -12,6 +12,7 @@ tests =
     , testCase "can typecheck type type" ttypeTC
     , testCase "can typecheck application of () to () -> ()" appIdToUnitTC
     , testCase "can typecheck identity applied to identity" idOfIdTC
+    , testCase "can apply a type to the polymorphic identity" polyIdTC
     ]
 
 tc_test :: Term -> Term -> Assertion
@@ -22,9 +23,11 @@ unit   = Base Unit
 tunit  = Base TUnit
 ttype  = Base Type
 eID ty = Binder Lam ty (Var 0)
+realID = Binder Lam (Base Type) (Binder Lam (Var 0) (Var 0))
 
 unitTC        = tc_test tunit unit
 tunitTC       = tc_test ttype tunit
 ttypeTC       = tc_test ttype ttype
 appIdToUnitTC = tc_test unit (Apply (eID tunit) unit)
 idOfIdTC      = tc_test (eID tunit) (Apply (eID (Binder Pi tunit tunit)) (eID tunit))
+polyIdTC      = tc_test (eID tunit) (Apply realID tunit)

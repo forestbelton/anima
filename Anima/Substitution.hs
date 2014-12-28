@@ -20,5 +20,6 @@ subst' j s (Var i)        = if i == j
 subst' j s (Binder b t m) = Binder b (subst t s) (subst' (j + 1) (shift 1 0 s) m)
 subst' j s (Apply t u)    = Apply (subst' j s t) (subst' j s u)
 
+-- Substitute b for all occurrences of Var 0
 subst :: Term -> Term -> Term
-subst a b = shift (-1) 0 (subst' 0 (shift 1 0 a) b)
+subst b a = shift (-1) 0 (subst' 0 (shift 1 0 a) b)
