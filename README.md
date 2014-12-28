@@ -28,13 +28,16 @@ Preprocessing executable 'anima' for anima-0.1.0.0...
  /(__)\  )  (  _)(_  )    (  /(__)\
 (__)(__)(_)\_)(____)(_/\/\_)(__)(__)  Version 0.1
 
-> Unit
-Unit : TUnit
-> (lam TUnit Unit)
-(lam TUnit Unit) : EPi TUnit TUnit
-> (lam TUnit 0)
-(lam TUnit 0) : EPi TUnit TUnit
->
+=> # The polymorphic identity function
+=> (lam Type (lam 0 0))
+Binder Lam (Base Type) (Binder Lam (Var 0) (Var 0)) : Binder Pi (Base Type) (Binder Pi (Var 0) (Var 0))
+=> # The identity function instantiated to the unit type
+=> ((lam Type (lam 0 0)) TUnit)
+Binder Lam (Base TUnit) (Var 0) : Binder Lam (Base TUnit) (Var 0)
+=> # The unit identity function, applied to the unit element
+=> (((lam Type (lam 0 0)) TUnit) Unit)
+Base Unit : Base Unit
+=>
 ```
 
 todo
