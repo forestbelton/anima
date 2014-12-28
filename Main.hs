@@ -8,6 +8,7 @@ import Anima.PPrint
 import Control.Monad
 import Text.ParserCombinators.Parsec
 import System.IO
+import System.Console.ANSI
 
 banner :: String
 banner =  "   __    _  _  ____  __  __    __     \n"
@@ -28,7 +29,11 @@ topLevel s = do
             case parse expr "" s of
                 Right e -> do
                     let ty = typeOf [] e
-                    putStrLn $ (pprint $ beta [] e) ++ " : " ++ (pprint ty)
+                    putStr $ (pprint $ beta [] e) ++ " : "
+                    setSGR [SetColor Foreground Vivid Green]
+                    putStr $ pprint ty
+                    setSGR []
+                    putStr "\n"
                 Left err   -> print err
 
 repl :: IO ()
