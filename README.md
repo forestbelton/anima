@@ -43,7 +43,6 @@ Base Unit : Base Unit
 todo
 ----
 
-* pretty printing
 * natural number support
 * identity types
 * support for strictly positive family definitions

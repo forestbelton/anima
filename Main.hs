@@ -3,6 +3,7 @@ module Main where
 import Anima.Types
 import Anima.Eval
 import Anima.Parser
+import Anima.PPrint
 
 import Control.Monad
 import Text.ParserCombinators.Parsec
@@ -27,12 +28,13 @@ topLevel s = do
             case parse expr "" s of
                 Right e -> do
                     let ty = typeOf [] e
-                    putStrLn $ (show (beta [] e)) ++ " : " ++ (show ty)
+                    putStrLn $ (pprint $ beta [] e) ++ " : " ++ (pprint ty)
                 Left err   -> print err
 
 repl :: IO ()
 repl = forever $ do
     hSetBuffering stdout NoBuffering
+    hSetEncoding stdout utf8
     putStr "=> "
     line <- getLine
     topLevel line
