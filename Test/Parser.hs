@@ -23,7 +23,7 @@ parser_test :: Term -> String -> Assertion
 parser_test t s = case (Right t ~=? parse expr "" s) of
     TestCase as -> as
 
-parseUnit   = parser_test (Base Unit) "E"
+parseUnit   = parser_test (Base Unit) "Unit"
 parseUnitTy = parser_test (Base TUnit) "TUnit"
 parseTyTy   = parser_test (Base Type) "Type"
-parseIdFunc = parser_test (Binder Lam (Base TUnit) (Base Unit)) "(lam TUnit E)"
+parseIdFunc = parser_test (Binder Lam (Base TUnit) (Base Unit)) "(lam TUnit Unit)"

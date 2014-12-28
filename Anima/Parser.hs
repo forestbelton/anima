@@ -13,7 +13,7 @@ General syntax, a la LISP: (fn arg1)
 0, 1, 2, ... represent De Bruijn indices
 
 Base values:
-E             -- The value of the unit type
+Unit          -- The value of the unit type
 TUnit         -- The type of the unit type
 Type          -- The type of types
 
@@ -29,7 +29,7 @@ Special forms:
 ws = many (oneOf " \r\t\n")
 nt p = string p <* ws
 
-base = (Base Unit <$ nt "E")
+base = (Base Unit <$ nt "Unit")
   <|> try (Base TUnit <$ nt "TUnit")
   <|> (Base Type <$ nt "Type")
   <|> (Var . read <$> (many1 (oneOf "0123456789") <* ws))

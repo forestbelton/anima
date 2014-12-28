@@ -11,7 +11,7 @@ The syntax uses parentheses in a way similar to a Lisp.
 | Name        | Description                                                                   |
 | ----------- | ----------------------------------------------------------------------------- |
 | `0, 1, ...` | De Bruijn indices                                                             |
-| `E`         | The inhabitant of the unit type                                               |
+| `Unit`      | The inhabitant of the unit type                                               |
 | `TUnit`     | The type of the unit type                                                     |
 | `Type`      | The type of types (aka TType). Yes, this needs universes                      |
 | `lam t e`   | A function that accepts an input of type t, and evaluates to the expression e |
@@ -28,10 +28,10 @@ Preprocessing executable 'anima' for anima-0.1.0.0...
  /(__)\  )  (  _)(_  )    (  /(__)\
 (__)(__)(_)\_)(____)(_/\/\_)(__)(__)  Version 0.1
 
-> E
-E : TUnit
-> (lam TUnit E)
-(lam TUnit E) : EPi TUnit TUnit
+> Unit
+Unit : TUnit
+> (lam TUnit Unit)
+(lam TUnit Unit) : EPi TUnit TUnit
 > (lam TUnit 0)
 (lam TUnit 0) : EPi TUnit TUnit
 >
