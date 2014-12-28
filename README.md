@@ -20,25 +20,7 @@ The syntax uses parentheses in a way similar to a Lisp.
 example
 -------
 
-```bash
-$ cabal run
-Preprocessing executable 'anima' for anima-0.1.0.0...
-   __    _  _  ____  __  __    __
-  /__\  ( \( )(_  _)(  \/  )  /__\
- /(__)\  )  (  _)(_  )    (  /(__)\
-(__)(__)(_)\_)(____)(_/\/\_)(__)(__)  Version 0.1
-
-=> # The polymorphic identity function
-=> (lam Type (lam 0 0))
-Binder Lam (Base Type) (Binder Lam (Var 0) (Var 0)) : Binder Pi (Base Type) (Binder Pi (Var 0) (Var 0))
-=> # The identity function instantiated to the unit type
-=> ((lam Type (lam 0 0)) TUnit)
-Binder Lam (Base TUnit) (Var 0) : Binder Lam (Base TUnit) (Var 0)
-=> # The unit identity function, applied to the unit element
-=> (((lam Type (lam 0 0)) TUnit) Unit)
-Base Unit : Base Unit
-=>
-```
+![example](http://i.imgur.com/xuNfXRE.png)
 
 todo
 ----
