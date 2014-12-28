@@ -19,13 +19,20 @@ main = do
     putStrLn banner
     repl
 
+topLevel :: String -> IO ()
+topLevel s = do
+    if head s == '#'
+        then return ()
+        else do
+            case parse expr "" s of
+                Right e -> do
+                    let ty = typeOf [] e
+                    putStrLn $ (show (beta [] e)) ++ " : " ++ (show ty)
+                Left err   -> print err
+
 repl :: IO ()
 repl = forever $ do
     hSetBuffering stdout NoBuffering
-    putStr "> "
+    putStr "=> "
     line <- getLine
-    case parse expr "" line of
-        Right e -> do
-            let ty = typeOf [] e
-            putStrLn $ (show (beta [] e)) ++ " : " ++ (show ty)
-        Left err   -> print err
+    topLevel line
