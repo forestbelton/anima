@@ -9,6 +9,7 @@ import Control.Monad
 import Text.ParserCombinators.Parsec
 import System.IO
 import System.Console.ANSI
+import System.Console.Haskeline
 
 banner :: String
 banner =  "   __    _  _  ____  __  __    __     \n"
@@ -18,28 +19,31 @@ banner =  "   __    _  _  ____  __  __    __     \n"
 
 main :: IO ()
 main = do
+    hSetBuffering stdout NoBuffering
+    hSetEncoding stdout utf8
     putStrLn banner
-    repl
+    runInputT defaultSettings repl
 
-topLevel :: String -> IO ()
+green :: String -> String
+green s = setSGRCode [SetColor Foreground Vivid Green] ++ s ++ setSGRCode []
+
+topLevel :: String -> InputT IO ()
 topLevel s = do
     if head s == '#'
         then return ()
         else do
-            case parse expr "" s of
+            outputStrLn $ case parse expr "" s of
                 Right e -> do
                     let reduced = beta [] e
-                    putStr $ (pprint reduced) ++ " : "
-                    setSGR [SetColor Foreground Vivid Green]
-                    putStr $ pprint (typeOf [] reduced)
-                    setSGR []
-                    putStr "\n"
-                Left err   -> print err
+                        ty      = typeOf [] reduced
+                    (pprint reduced) ++ " : " ++ green (pprint ty)
+                Left err   -> show err
 
-repl :: IO ()
+repl :: InputT IO ()
 repl = forever $ do
-    hSetBuffering stdout NoBuffering
-    hSetEncoding stdout utf8
-    putStr "=> "
-    line <- getLine
-    topLevel line
+    input <- getInputLine "=> "
+    case input of
+        Nothing ->
+            return ()
+        Just line ->
+            topLevel line
