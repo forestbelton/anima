@@ -20,7 +20,7 @@ The syntax uses parentheses in a way similar to a Lisp.
 example
 -------
 
-![example](http://i.imgur.com/xuNfXRE.png)
+![example](http://i.imgur.com/TydemDi.png)
 
 todo
 ----
