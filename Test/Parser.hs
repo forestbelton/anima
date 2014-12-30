@@ -14,6 +14,7 @@ tests =
     , testCase "can parse unit type" parseUnitTy
     , testCase "can parse type type" parseTyTy
     , testCase "can parse function () -> ()" parseIdFunc
+    , testCase "can parse true" parseTrueFunc
     ]
 
 instance Eq ParseError where
@@ -23,7 +24,10 @@ parser_test :: Term -> String -> Assertion
 parser_test t s = case (Right t ~=? parse expr "" s) of
     TestCase as -> as
 
-parseUnit   = parser_test (Base Unit) "Unit"
-parseUnitTy = parser_test (Base TUnit) "TUnit"
-parseTyTy   = parser_test (Base Type) "Type"
-parseIdFunc = parser_test (Binder Lam (Base TUnit) (Base Unit)) "(lam TUnit Unit)"
+parseUnit      = parser_test (Base Unit) "Unit"
+parseUnitTy    = parser_test (Base TUnit) "TUnit"
+parseTyTy      = parser_test (Base Type) "Type"
+parseIdFunc    = parser_test (Binder Lam (Base TUnit) (Base Unit)) "(lam TUnit Unit)"
+parseTrueFunc  = parser_test (Base ATrue) "True"
+parseFalseFunc = parser_test (Base AFalse) "False"
+parseBoolFunc  = parser_test (Base TBool) "Bool"

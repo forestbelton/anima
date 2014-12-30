@@ -31,6 +31,9 @@ nt p = string p <* ws
 
 base = (Base Unit <$ nt "Unit")
   <|> try (Base TUnit <$ nt "TUnit")
+  <|> try (Base ATrue <$ nt "True")
+  <|> (Base AFalse <$ nt "False")
+  <|> (Base TBool <$ nt "Bool")
   <|> (Base Type <$ nt "Type")
   <|> (Var . read <$> (many1 (oneOf "0123456789") <* ws))
 

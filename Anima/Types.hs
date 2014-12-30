@@ -7,6 +7,9 @@ data TermBase
     = Unit
     | Type
     | TUnit
+    | ATrue
+    | AFalse
+    | TBool
   deriving (Show, Eq)
 
 data TermBinder
