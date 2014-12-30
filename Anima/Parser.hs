@@ -34,6 +34,7 @@ base = (Base Unit <$ nt "Unit")
   <|> try (Base ATrue <$ nt "True")
   <|> (Base AFalse <$ nt "False")
   <|> (Base TBool <$ nt "Bool")
+  <|> (Base TNat <$ nt "Nat")
   <|> (Base Type <$ nt "Type")
   <|> (Var . read <$> (many1 (oneOf "0123456789") <* ws))
 
@@ -43,8 +44,13 @@ pi' = Binder Pi <$> (nt "pi" *> expr) <*> expr
 
 apply = Apply <$> expr <*> expr
 
+nat = (Base (ANat Z) <$ nt "Z")
+  <|> try (inc <$> (nt "(" *> nt "S" *> nat <* nt ")"))
+  where inc (Base (ANat k)) = Base (ANat (S k))
+
 form = lambda
   <|> pi'
   <|> apply
+  <|> nat
 
-expr = (nt "(" *> form <* nt ")") <|> base
+expr = try nat <|> (nt "(" *> form <* nt ")") <|> base

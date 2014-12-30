@@ -3,6 +3,11 @@ module Anima.Types where
 type TermVar = Int
 type Env = [Term]
 
+data Nat
+    = Z
+    | S Nat
+  deriving (Show, Eq)
+
 data TermBase
     = Unit
     | Type
@@ -10,6 +15,8 @@ data TermBase
     | ATrue
     | AFalse
     | TBool
+    | ANat Nat
+    | TNat
   deriving (Show, Eq)
 
 data TermBinder

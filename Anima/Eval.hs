@@ -15,6 +15,7 @@ typeOf :: Env -> Term -> Term
 typeOf env (Base Unit)      = Base TUnit
 typeOf env (Base ATrue)     = Base TBool
 typeOf env (Base AFalse)    = Base TBool
+typeOf env (Base (ANat _))  = Base TNat
 typeOf env (Base x)         = Base Type -- Type : Type for now
 typeOf env (Var v)          = look v env
 typeOf env (Binder Lam t m) = Binder Pi t $ typeOf (t:env) m
